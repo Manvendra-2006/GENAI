@@ -1,0 +1,109 @@
+.interview-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 240px 1fr 240px;
+  gap: 24px;
+  padding: 28px;
+  background: linear-gradient(180deg, #060b16 0%, #111827 100%);
+  color: #e2e8f0;
+}
+
+.interview-sidebar,
+.interview-main {
+  display: flex;
+}
+
+.interview-panel {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 24px 56px rgba(7, 12, 25, 0.35);
+  padding: 22px;
+}
+
+.interview-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: #f8fafc;
+}
+
+.interview-option-list {
+  display: grid;
+  gap: 18px;
+}
+
+.interview-option-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  color: #f8fafc;
+  padding: 22px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.interview-option-card:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.interview-main-panel {
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.interview-main-placeholder {
+  width: 100%;
+  max-width: 720px;
+  padding: 42px 32px;
+  background: rgba(30, 41, 59, 0.92);
+  border-radius: 28px;
+  border: 1px dashed rgba(148, 163, 184, 0.24);
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+.skill-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.skill-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 18px 16px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+@media (max-width: 1024px) {
+  .interview-page {
+    grid-template-columns: 1fr;
+  }
+
+  .interview-sidebar,
+  .interview-main {
+    width: 100%;
+  }
+
+  .interview-panel {
+    padding: 20px;
+  }
+}
