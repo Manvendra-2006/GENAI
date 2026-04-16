@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./User.js";
 // Job Description  : String
 // Resume text 
 // self description
@@ -83,7 +84,12 @@ const interviewReportSchema = new mongoose.Schema({
     technicalQuestionSchema:{technicalQuestionSchema},
     behaviourQuestionSchema : {behaviourQuestionSchema},
     skillGapsSchema:{skillGapsSchema},
-    preparationPlanSchema:{preparationPlanSchema}
+    preparationPlanSchema:{preparationPlanSchema},
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        required:true
+    }
 },{
     timestamps:true
 })
