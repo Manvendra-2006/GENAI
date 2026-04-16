@@ -4,7 +4,7 @@ import User from "./User.js";
 // Resume text 
 // self description
 
-const technicalQuestionSchema = new mongoose.Schema({
+const technicalQuestion = new mongoose.Schema({
     question:{
         type:String,
         required:true
@@ -20,7 +20,7 @@ const technicalQuestionSchema = new mongoose.Schema({
 },{
     _id:false
 })
-const behaviourQuestionSchema = new mongoose.Schema({
+const behaviourQuestion = new mongoose.Schema({
         question:{
         type:String,
         required:true
@@ -36,7 +36,7 @@ const behaviourQuestionSchema = new mongoose.Schema({
 },{
     _id:false
 })
-const skillGapsSchema = new mongoose.Schema({
+const skillGaps = new mongoose.Schema({
     skill:{
         type:String,
         required:true
@@ -49,9 +49,9 @@ const skillGapsSchema = new mongoose.Schema({
 },{
     _id:false
 })
-const preparationPlanSchema = new mongoose.Schema({
+const preparationPlan = new mongoose.Schema({
     day:{
-        type:String,
+        type:Number,
         required:true
     },
     focus:{
@@ -81,10 +81,10 @@ const interviewReportSchema = new mongoose.Schema({
         min:0,
         max:100
     },
-    technicalQuestionSchema:{technicalQuestionSchema},
-    behaviourQuestionSchema : {behaviourQuestionSchema},
-    skillGapsSchema:{skillGapsSchema},
-    preparationPlanSchema:{preparationPlanSchema},
+    technicalQuestionSchema:[technicalQuestion],
+    behaviourQuestionSchema : [behaviourQuestion],
+    skillGapsSchema:[skillGaps],
+    preparationPlanSchema:[preparationPlan],
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
