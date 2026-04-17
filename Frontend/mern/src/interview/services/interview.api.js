@@ -1,9 +1,9 @@
 import api from "../../../axios";
-export async function generateInterviewReport({resumeText,selfDescription,jobDescription}){
+export async function generateInterviewReport({resume,selfDescription,jobDescription}){
         const formData = new FormData()
         formData.append("jobDescription",jobDescription)
         formData.append("selfDescription",selfDescription)
-        formData.append("resumeText",resumeText)
+        formData.append("resume",resume)
 
         const response = await api.post("/interview/",formData,{
             headers:{
@@ -16,7 +16,7 @@ export async function getInterviewReportById(interviewId){
     const response = await api.get(`/interview/report/${interviewId}`)
     return response.data
 }
-export function getAllInterviewReport(){
+export async  function getAllInterviewReport(){
     const response = await api.get("/interview/reports")
     return response.data
 }

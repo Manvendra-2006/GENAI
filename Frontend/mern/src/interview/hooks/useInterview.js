@@ -3,13 +3,14 @@ import { generateInterviewReport } from "../services/interview.api";
 import { getInterviewReportById } from "../services/interview.api";
 import { getAllInterviewReport } from "../services/interview.api";
 import { InterviewContext } from "../interview.context";
-function useInterview(){
+export default function useInterview(){
     const context = useContext(InterviewContext)
     const {loading,setloading,report,setreport,setreports,reports} = context
- async   function generateReport({jobDescription,selfDescription,resumeText}){
+ async   function generateReport({jobDescription,selfDescription,resume}){
         setloading(true)
+        let response = null
         try{
-            const response = await generateInterviewReport({jobDescription,selfDescription,resumeText})
+             response = await generateInterviewReport({jobDescription,selfDescription,resume})
             setreport(response.interviewReport)
         }
         catch(error){
@@ -18,11 +19,13 @@ function useInterview(){
         finally{
             setloading(false)
         }
+        return response.interviewReport
     }
   async   function getReportById(interviewId){
         setloading(true)
+        let response = null
         try{
-            const response = await getInterviewReportById(interviewId)
+            response = await getInterviewReportById(interviewId)
             setreport(response.interviewReport)
         }
         catch(error){
@@ -31,11 +34,13 @@ function useInterview(){
         finally{
             setloading(false)
         }
+        return response.interviewReport
     }
    async function getReports(){
         setloading(true)
+        let response = null
         try{
-            const response = await getAllInterviewReport()
+         response = await getAllInterviewReport()
             setreports(response.interviewReport)
         }
         catch(error){
@@ -44,6 +49,7 @@ function useInterview(){
         finally{
             setloading(false)
         }
+        return response.interviewReport
     }
     return {loading,report,reports,getReportById,generateReport,getReports}
 }

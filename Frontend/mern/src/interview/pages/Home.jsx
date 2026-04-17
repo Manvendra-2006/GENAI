@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 
 import '../style/Home.css'
+import useInterview from '../hooks/useInterview'
+import { useNavigate } from 'react-router-dom'
 const Home = () => {
+  const { loading, generateReport } = useInterview()
+  const [jobDescription, setjobDescription] = useState('')
+  const [selfDescription, setselfDescription] = useState('')
+  const resumeInputRef = useRef()
+  const navigate = useNavigate()
+  async function handleGenerateReport() {
+    const resume = resumeInputRef.current.files[0]
+    const data = await generateReport({ jobDescription, selfDescription, resume })
+    console.log(data)
+    navigate(`/interview/${data._id}`)
+    
+  }
   return (
     <div className="home">
       <div className="form-card">
@@ -17,6 +31,8 @@ const Home = () => {
             id="jobDescription"
             placeholder="Enter Job Description here...."
             rows="8"
+            onChange={(event) => setjobDescription(event.target.value)}
+            value={jobDescription}
           ></textarea>
         </div>
 
@@ -28,6 +44,7 @@ const Home = () => {
               name="resume"
               id="resume"
               accept=".pdf"
+              ref={resumeInputRef}
             />
           </div>
 
@@ -38,11 +55,13 @@ const Home = () => {
               name="selfDescription"
               id="selfDescription"
               placeholder="Describe yourself in this box..."
+              onChange={(event) => setselfDescription(event.target.value)}
+              value={selfDescription}
             />
           </div>
         </div>
 
-        <button className="generate-btn">Generate Interview Report</button>
+        <button onClick={handleGenerateReport} className="generate-btn">Generate Interview Report</button>
       </div>
     </div>
   )

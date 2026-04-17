@@ -1,50 +1,6 @@
 ﻿import React, { useMemo, useState } from 'react'
 import '../style/interview.css'
-
-const interviewData = {
-  matchScore: 90,
-  technicalQuestionSchema: [
-    {
-      question: 'Can you explain the difference between React.js and Angular.js?',
-      intention: 'To assess the candidate\'s knowledge of frontend frameworks',
-      answer: 'React.js is a library, whereas Angular.js is a full-fledged framework'
-    },
-    {
-      question: 'How do you implement authentication in a MERN stack application?',
-      intention: 'To evaluate the candidate\'s understanding of authentication mechanisms',
-      answer: 'Using JSON Web Tokens (JWT) or OAuth'
-    }
-  ],
-  behaviourQuestionSchema: [
-    {
-      question: 'Tell me about a time when you had to troubleshoot a difficult issue in your previous project',
-      intention: 'To assess the candidate\'s problem-solving skills',
-      answer: 'The candidate should provide a specific example and walk through their thought process'
-    },
-    {
-      question: 'Can you describe a situation where you had to work with a team to deliver a project under a tight deadline?',
-      intention: 'To evaluate the candidate\'s teamwork and time management skills',
-      answer: 'The candidate should provide a specific example and highlight their contributions to the team'
-    }
-  ],
-  skillGapsSchema: [
-    { skill: 'GraphQL', severity: 'low' },
-    { skill: 'TypeScript', severity: 'medium' }
-  ],
-  preparationPlanSchema: [
-    {
-      day: 1,
-      focus: 'Review of React.js and Node.js fundamentals',
-      tasks: ['Complete online tutorials', 'Practice building small projects']
-    },
-    {
-      day: 2,
-      focus: 'Practice solving technical problems',
-      tasks: ['Complete coding challenges on platforms like HackerRank or LeetCode', 'Review common interview questions']
-    }
-  ]
-}
-
+import useInterview from '../hooks/useInterview'
 const sectionConfig = [
   {
     id: 'technical',
@@ -66,9 +22,10 @@ const sectionConfig = [
   }
 ]
 
+
 const Interview = () => {
   const [activeSectionId, setActiveSectionId] = useState(sectionConfig[0].id)
-
+  const {report, loading} = useInterview()
   const activeSection = useMemo(
     () => sectionConfig.find((section) => section.id === activeSectionId) || sectionConfig[0],
     [activeSectionId]
@@ -76,10 +33,14 @@ const Interview = () => {
 
   const activeItems = useMemo(() => {
     if (activeSection.id === 'roadmap') {
-      return interviewData.preparationPlanSchema
+      return report.preparationPlanSchema
     }
-    return interviewData[activeSection.schemaKey]
+    return report[activeSection.schemaKey]
   }, [activeSection])
+
+  if (loading || !report) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="interview-page">
@@ -109,7 +70,7 @@ const Interview = () => {
                 <h1 className="interview-main-title">{activeSection.title}</h1>
                 <p className="interview-main-description">{activeSection.subtitle}</p>
               </div>
-              <div className="interview-score-pill">{interviewData.matchScore}% match</div>
+              <div className="interview-score-pill">{report.matchScore}% match</div>
             </div>
 
             <div className="interview-main-details">
@@ -146,7 +107,7 @@ const Interview = () => {
         <div className="interview-panel">
           <h2 className="interview-section-title">Skill Gaps</h2>
           <ul className="skill-list">
-            {interviewData.skillGapsSchema.map((item) => (
+            {report.skillGapsSchema.map((item) => (
               <li key={item.skill} className="skill-item">
                 <span>{item.skill}</span>
                 <span className={`severity severity-${item.severity}`}>{item.severity}</span>
