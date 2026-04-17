@@ -14,7 +14,7 @@ const App = () => {
         <Route element={<Protected><Home/></Protected> }path="/"/>
         <Route element={<Login/>} path='/login'/>
         <Route element={<SignUp/>} path='/signup'/>
-        <Route element={<Interview/>} path="/interview"/>
+        <Route element={<Protected><Interview/></Protected>} path="/interview/:interview"/>
       </Routes>
       </BrowserRouter>
     </div>
