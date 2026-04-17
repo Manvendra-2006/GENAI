@@ -31,3 +31,30 @@ export async function interviewController(req,resp){
         return resp.status(500).json({message:"Internal Server Error",error})
     }
 }
+export async function getInterviewReport(req,resp){
+    try{
+        const {interviewId} = req.params
+        const interviewReport = await InterViewReport.findOne({_id:interviewId,user:req.user.id})
+        if(!interviewReport){
+            return resp.status(404).json({
+                message:"Interview report not found"
+            })
+        }
+        resp.status(200).json({message:"Interview Fetched Successfully",interviewReport})
+    }
+    catch(error){
+        return resp.status(500).json({message:"Internal Server Error",error})
+    }
+}
+export async function getAllInterviewReportController(req,resp){
+    try{
+        const interviewReports = await InterViewReport.find({user:req.user.id}).sort({createdAt:-1}).select("-resumeText -selfDescription -jobDescription -_v -tecnicalQuestionSchema -behaviourQuestionSchema -skillGapsSchema -preparationPlanSchema")
+        if(!interviewReports){
+            return resp.status(404).json({message:"All interview Reports are not get"})
+        }
+        return resp.status(201).json({message:"All interview Reports are get", interviewReports})
+    }
+    catch(error){
+        return resp.status(500).json({message:"Internal Server Error",error})
+    }
+}
