@@ -31,57 +31,91 @@ const interviewReportZodSchema = z.object({
 })
 async function generateInterviewReport({ resumeText, selfDescription, jobDescription }) {
 
-    const prompt = `Generate an interview report for a candidate with the following details:
+    const prompt = `Generate a detailed interview report for a candidate with the following details:
 
-    Resume: ${resumeText}
-    Self Description: ${selfDescription}
-    Job Description: ${jobDescription}
+Resume: ${resumeText}
+Self Description: ${selfDescription}
+Job Description: ${jobDescription}
 
-    You MUST return a JSON object with EXACTLY these fields and no other fields:
+You MUST return a JSON object with EXACTLY these fields and no other fields:
+{
+  "matchScore": (number between 0-100),
+  "technicalQuestionSchema": [
     {
-        "matchScore": (number between 0-100),
-        "technicalQuestionSchema": [
-            {
-                "question": "string",
-                "intention": "string",
-                "answer": "string"
-            }
-        ],
-        "behaviourQuestionSchema": [
-            {
-                "question": "string",
-                "intention": "string",
-                "answer": "string"
-            }
-        ],
-        "skillGapsSchema": [
-            {
-                "skill": "string",
-                "severity": "low" or "medium" or "high"
-            }
-        ],
-        "preparationPlanSchema": [
-            {
-                "day": (number),
-                "focus": "string",
-                "tasks": ["string", "string"]
-            }
-        ]
+      "question": "string",
+      "intention": "string",
+      "answer": "string"
     }
+  ],
+  "behaviourQuestionSchema": [
+    {
+      "question": "string",
+      "intention": "string",
+      "answer": "string"
+    }
+  ],
+  "skillGapsSchema": [
+    {
+      "skill": "string",
+      "severity": "low" or "medium" or "high"
+    }
+  ],
+  "preparationPlanSchema": [
+    {
+      "day": (number),
+      "focus": "string",
+      "tasks": ["string", "string"]
+    }
+  ]
+}
 
-    Do NOT add any extra fields. Follow this structure exactly.
-    Return the response in JSON format only.
-     Return the response in JSON format matching this structure:
-    ${JSON.stringify(zodToJsonSchema(interviewReportZodSchema))}
-    `;
+Important rules:
+1. The report must be strongly based on the Resume, Self Description, and Job Description.
+2. The matchScore must realistically reflect how well the candidate fits the job.
+3. The number and difficulty of questions MUST vary according to the matchScore.
 
+Question count rules:
+- If matchScore is 80 to 100:
+  - technicalQuestionSchema must contain exactly 4 questions
+  - behaviourQuestionSchema must contain exactly 3 questions
+  - questions should be advanced and role-specific
+  - skillGapsSchema must contain 2 to 3 items
+  - preparationPlanSchema must contain exactly 5 days
+
+- If matchScore is 50 to 79:
+  - technicalQuestionSchema must contain exactly 6 questions
+  - behaviourQuestionSchema must contain exactly 4 questions
+  - questions should be mixed: foundational + intermediate + role-specific
+  - skillGapsSchema must contain 3 to 5 items
+  - preparationPlanSchema must contain exactly 7 days
+
+- If matchScore is below 50:
+  - technicalQuestionSchema must contain exactly 8 questions
+  - behaviourQuestionSchema must contain exactly 5 questions
+  - questions should focus more on fundamentals, practical understanding, and common interview basics
+  - skillGapsSchema must contain 5 to 7 items
+  - preparationPlanSchema must contain exactly 10 days
+
+Additional rules:
+4. technicalQuestionSchema questions must be highly relevant to the job description.
+5. behaviourQuestionSchema questions must test communication, teamwork, ownership, problem-solving, conflict handling, and adaptability.
+6. skillGapsSchema should identify genuine gaps between the candidate profile and the job requirements.
+7. preparationPlanSchema should be practical, structured, and personalized to the candidate's weaknesses.
+8. Do NOT return empty arrays.
+9. Do NOT add markdown, explanation, or text outside JSON.
+10. Return valid JSON only.
+
+Return the response in JSON format matching this structure: 
+${JSON.stringify(zodToJsonSchema(interviewReportZodSchema))} 
+`;
+ // isme zod to Schema fir read krne ke liye JSON.stringify karke prompt me dalenge taki model ko pata chale ki hume kasia data chahiye aur uske according hi response de . Aur response ko parse krke use krenge
     const response = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: [{ role: "user", content: prompt }],
         response_format: { type: "json_object" }
     });
     const data = JSON.parse(response.choices[0].message.content);
-    const stringData = JSON.stringify(data, null, 2);   
+    const stringData = JSON.stringify(data, null, 2);
     console.log(data)
     return data
 
