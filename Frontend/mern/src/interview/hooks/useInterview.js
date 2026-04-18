@@ -46,14 +46,14 @@ export default function useInterview() {
 
         try {
             response = await getAllInterviewReport()
-            setreports(response.interviewReport)
+            setreports(response.interviewReports)
         } catch (error) {
             console.log(error)
         } finally {
             setloading(false)
         }
 
-        return response?.interviewReport
+        return response?.interviewReports
     }, [setloading, setreports])
 
     return { loading, report, reports, getReportById, generateReport, getReports }

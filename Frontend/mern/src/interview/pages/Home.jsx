@@ -4,7 +4,7 @@ import '../style/Home.css'
 import useInterview from '../hooks/useInterview'
 import { useNavigate } from 'react-router-dom'
 const Home = () => {
-  const { loading, generateReport } = useInterview()
+  const { loading, generateReport, reports, getReports } = useInterview()
   const [jobDescription, setjobDescription] = useState('')
   const [selfDescription, setselfDescription] = useState('')
   const resumeInputRef = useRef()
@@ -64,6 +64,10 @@ const Home = () => {
         </div>
 
         <button onClick={handleGenerateReport} className="generate-btn">Generate Interview Report</button>
+      </div>
+
+      <div className="recent-reports-section">
+        <button onClick={() => navigate('/reports')} className="get-reports-btn">View All Reports</button>
       </div>
     </div>
   )

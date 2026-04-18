@@ -26,7 +26,7 @@ const sectionConfig = [
 
 const Interview = () => {
   const [activeSectionId, setActiveSectionId] = useState(sectionConfig[0].id)
-  const {report, loading, getReportById} = useInterview()
+  const {report, loading, getReportById,getReports} = useInterview()
   const {interview} = useParams()
   const activeSection = useMemo(
     () => sectionConfig.find((section) => section.id === activeSectionId) || sectionConfig[0],
@@ -36,6 +36,9 @@ const Interview = () => {
   useEffect(() => {
     if (interview) {
       getReportById(interview)
+    }
+    else{
+      getReports()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interview])

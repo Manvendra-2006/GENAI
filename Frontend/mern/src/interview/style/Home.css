@@ -105,3 +105,72 @@ body {
   background: #357abd;
 }
 
+.recent-reports-section {
+  margin-top: 40px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.get-reports-btn {
+  width: 100%;
+  padding: 14px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.get-reports-btn:hover {
+  background: #218838;
+}
+
+.recent-reports {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.recent-reports h2 {
+  font-size: 24px;
+  color: #222;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.reports-list {
+  list-style: none;
+  padding: 0;
+}
+
+.report-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.report-item:hover {
+  background: #f8f9fa;
+}
+
+.report-match {
+  font-weight: 600;
+  color: #4a90e2;
+}
+
+.report-date {
+  color: #666;
+  font-size: 14px;
+}
+

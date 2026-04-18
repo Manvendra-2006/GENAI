@@ -5,6 +5,7 @@ import SignUp from './Auth/pages/SignUp'
 import Protected from './Auth/components/Protected'
 import Home from './interview/pages/Home'
 import Interview from './interview/pages/interview'
+import AllReports from './interview/pages/AllReports'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route element={<Login/>} path='/login'/>
         <Route element={<SignUp/>} path='/signup'/>
         <Route element={<Protected><Interview/></Protected>} path="/interview/:interview"/>
+        <Route element={<Protected><AllReports/></Protected>} path="/reports"/>
       </Routes>
       </BrowserRouter>
     </div>
