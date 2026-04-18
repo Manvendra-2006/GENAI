@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 import '../style/Home.css'
 import useInterview from '../hooks/useInterview'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../components/Loading'
 const Home = () => {
   const { loading, generateReport, reports, getReports } = useInterview()
   const [jobDescription, setjobDescription] = useState('')
@@ -16,7 +17,7 @@ const Home = () => {
     navigate(`/interview/${data._id}`)   
   }
   if(loading){
-    return(<div>Loading........</div>)
+    return <Loading message="Generating your personalized interview report..." />
   }
   return (
     <div className="home">
@@ -63,14 +64,13 @@ const Home = () => {
           </div>
         </div>
 
-        <button onClick={handleGenerateReport} className="generate-btn">Generate Interview Report</button>
-      </div>
-
-      <div className="recent-reports-section">
-        <button onClick={() => navigate('/reports')} className="get-reports-btn">View All Reports</button>
-      </div>
+        <div className="button-row">
+          <button onClick={handleGenerateReport} className="generate-btn">Generate Interview Report</button>
+          <button onClick={() => navigate('/reports')} className="view-reports-btn">View All Reports</button>
+        </div>
+    </div>
     </div>
   )
-}
 
+}
 export default Home

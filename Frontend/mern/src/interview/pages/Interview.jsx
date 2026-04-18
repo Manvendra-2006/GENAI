@@ -2,6 +2,7 @@
 import '../style/interview.css'
 import useInterview from '../hooks/useInterview'
 import { useParams } from 'react-router-dom'
+import Loading from '../components/Loading'
 const sectionConfig = [
   {
     id: 'technical',
@@ -26,6 +27,7 @@ const sectionConfig = [
 
 const Interview = () => {
   const [activeSectionId, setActiveSectionId] = useState(sectionConfig[0].id)
+  const [expandedQuestions, setExpandedQuestions] = useState(new Set())
   const {report, loading, getReportById,getReports} = useInterview()
   const {interview} = useParams()
   const activeSection = useMemo(
@@ -43,6 +45,18 @@ const Interview = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interview])
 
+  const toggleQuestion = (question) => {
+    setExpandedQuestions(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(question)) {
+        newSet.delete(question)
+      } else {
+        newSet.add(question)
+      }
+      return newSet
+    })
+  }
+
   const activeItems = useMemo(() => {
     if (!report) {
       return []
@@ -54,7 +68,7 @@ const Interview = () => {
   }, [activeSection, report])
 
   if (loading || !report) {
-    return <div>Loading...</div>
+    return <Loading message="Loading your interview report..." />
   }
 
   return (
@@ -107,9 +121,20 @@ const Interview = () => {
                 activeItems.map((item) => (
                   <div key={item.question} className="question-card">
                     <p className="question-label">Question</p>
-                    <h2 className="question-title">{item.question}</h2>
-                    <p className="question-intention">{item.intention}</p>
-                    <p className="question-answer">{item.answer}</p>
+                    <h2 
+                      className={`question-title clickable ${expandedQuestions.has(item.question) ? 'expanded' : ''}`} 
+                      onClick={() => toggleQuestion(item.question)}
+                    >
+                      {item.question}
+                    </h2>
+                    {expandedQuestions.has(item.question) && (
+                      <>
+                        <p className="question-label">Intention</p>
+                        <p className="question-intention">{item.intention}</p>
+                        <p className="question-label">Model Answer</p>
+                        <p className="question-answer">{item.answer}</p>
+                      </>
+                    )}
                   </div>
                 ))
               )}
