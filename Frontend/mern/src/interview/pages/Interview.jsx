@@ -28,7 +28,9 @@ const sectionConfig = [
 const Interview = () => {
   const [activeSectionId, setActiveSectionId] = useState(sectionConfig[0].id)
   const [expandedQuestions, setExpandedQuestions] = useState(new Set())
-  const {report, loading, getReportById,getReports} = useInterview()
+  const [downloadLoading, setDownloadLoading] = useState(false)
+  const [downloadMessage, setDownloadMessage] = useState('')
+  const {report, loading, getReportById, getReports, getResume} = useInterview()
   const {interview} = useParams()
   const activeSection = useMemo(
     () => sectionConfig.find((section) => section.id === activeSectionId) || sectionConfig[0],
@@ -44,6 +46,24 @@ const Interview = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interview])
+
+  const handleDownloadResume = async () => {
+    if (!interview) return
+    setDownloadMessage('Generating AI Resume PDF...')
+    setDownloadLoading(true)
+
+    try {
+      await getResume(interview)
+      setDownloadMessage('Your AI Resume PDF download should start shortly.')
+    } catch (error) {
+      setDownloadMessage('Unable to download the PDF. Please try again.')
+    } finally {
+      setTimeout(() => {
+        setDownloadLoading(false)
+        setDownloadMessage('')
+      }, 1800)
+    }
+  }
 
   const toggleQuestion = (question) => {
     setExpandedQuestions(prev => {
@@ -99,8 +119,23 @@ const Interview = () => {
                 <h1 className="interview-main-title">{activeSection.title}</h1>
                 <p className="interview-main-description">{activeSection.subtitle}</p>
               </div>
-              <div className="interview-score-pill">{report.matchScore}% match</div>
+              <div className="interview-header-actions">
+                <button
+                  type="button"
+                  className="download-resume-btn"
+                  onClick={handleDownloadResume}
+                  disabled={downloadLoading}
+                >
+                  {downloadLoading ? 'Generating Resume...' : 'Download Resume PDF'}
+                </button>
+                <div className="interview-score-pill">{report.matchScore}% match</div>
+              </div>
             </div>
+            {downloadMessage && (
+              <div className="download-status-banner">
+                {downloadMessage}
+              </div>
+            )}
 
             <div className="interview-main-details">
               {activeSection.id === 'roadmap' ? (

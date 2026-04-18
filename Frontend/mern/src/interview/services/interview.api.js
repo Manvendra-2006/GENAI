@@ -20,3 +20,7 @@ export async  function getAllInterviewReport(){
     const response = await api.get("/interview/reports")
     return response.data
 }
+export async function generateResumePDF(interviewId){
+    const response = await api.get(`/interview/download/${interviewId}`,{responseType:"blob"})
+    return response.data
+}
