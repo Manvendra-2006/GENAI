@@ -3,13 +3,26 @@ import React, { useRef, useState } from 'react'
 import '../style/Home.css'
 import useInterview from '../hooks/useInterview'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../Auth/hooks/useAuth'
 import Loading from '../components/Loading'
 const Home = () => {
   const { loading, generateReport, reports, getReports } = useInterview()
+  const { handleLogOut } = useAuth()
   const [jobDescription, setjobDescription] = useState('')
   const [selfDescription, setselfDescription] = useState('')
   const resumeInputRef = useRef()
   const navigate = useNavigate()
+
+  async function handleLogout() {
+    try {
+      await handleLogOut()
+    } catch (error) {
+      console.error('Logout failed', error)
+    } finally {
+      navigate('/login')
+    }
+  }
+
   async function handleGenerateReport() {
     const resume = resumeInputRef.current.files[0]
     const data = await generateReport({ jobDescription, selfDescription, resume })
@@ -22,7 +35,12 @@ const Home = () => {
   return (
     <div className="home">
       <div className="form-card">
-        <h1>Interview Report Generator</h1>
+        <div className="home-header">
+          <h1>Interview Report Generator</h1>
+          <button type="button" className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
         <p className="subtitle">
           Fill in the details below to generate your interview report
         </p>
