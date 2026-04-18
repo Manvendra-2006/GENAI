@@ -3,10 +3,11 @@
 // import { connectDB } from './config/db.js';
 
 // import { resumeText,selfDescription,jobDescription } from './services/temp.js';
-// import  generateInterviewReport  from './services/ai.service.js';
+// import { generateResumePdf } from './services/ai.service.js';
+// //import  generateInterviewReport  from './services/ai.service.js';
 // connectDB()
-
-// generateInterviewReport({resumeText,selfDescription,jobDescription})
+// generateResumePdf({resumeText,selfDescription,jobDescription})
+// //generateInterviewReport({resumeText,selfDescription,jobDescription})
 // app.listen(process.env.PORT,()=>{
 //     console.log("Server is running on port 3000")
 // })

@@ -1,5 +1,5 @@
 import { PDFParse } from "pdf-parse"
-import generateInterviewReport from "../services/ai.service.js"
+import generateInterviewReport, { generateResumePdf } from "../services/ai.service.js"
 import InterViewReport from "../models/interviewReport.model.js"
 export async function interviewController(req,resp){
     try{
@@ -56,5 +56,24 @@ export async function getAllInterviewReportController(req,resp){
     }
     catch(error){
         return resp.status(500).json({message:"Internal Server Error",error})
+    }
+}
+export async function downloadInterviewReportController(req,resp){
+    try{
+        const {interviewId} = req.params
+        const interviewReport = await InterViewReport.findById(interviewId)
+        if(!interviewReport){
+            return resp.status(404).json({message:"Interview Report not found"})
+        }
+        const {resumeText,selfDescription,jobDescription} = interviewReport
+        const pdfBuffer = await generateResumePdf({resumeText,selfDescription,jobDescription})
+        resp.set({
+            "Content-Type":"application/pdf",
+            "Content-Disposition":"attachement; filename = interview_report.pdf"
+        })
+        resp.send(pdfBuffer)
+    }
+    catch(error){
+        resp.status(500).json({message:"Internal Server Error",error})
     }
 }
