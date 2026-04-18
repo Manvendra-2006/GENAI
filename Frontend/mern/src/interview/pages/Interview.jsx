@@ -1,6 +1,7 @@
-﻿import React, { useMemo, useState } from 'react'
+﻿import React, { useEffect, useMemo, useState } from 'react'
 import '../style/interview.css'
 import useInterview from '../hooks/useInterview'
+import { useParams } from 'react-router-dom'
 const sectionConfig = [
   {
     id: 'technical',
@@ -25,18 +26,29 @@ const sectionConfig = [
 
 const Interview = () => {
   const [activeSectionId, setActiveSectionId] = useState(sectionConfig[0].id)
-  const {report, loading} = useInterview()
+  const {report, loading, getReportById} = useInterview()
+  const {interview} = useParams()
   const activeSection = useMemo(
     () => sectionConfig.find((section) => section.id === activeSectionId) || sectionConfig[0],
     [activeSectionId]
   )
 
+  useEffect(() => {
+    if (interview) {
+      getReportById(interview)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [interview])
+
   const activeItems = useMemo(() => {
+    if (!report) {
+      return []
+    }
     if (activeSection.id === 'roadmap') {
       return report.preparationPlanSchema
     }
     return report[activeSection.schemaKey]
-  }, [activeSection])
+  }, [activeSection, report])
 
   if (loading || !report) {
     return <div>Loading...</div>

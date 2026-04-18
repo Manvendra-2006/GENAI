@@ -13,8 +13,10 @@ const Home = () => {
     const resume = resumeInputRef.current.files[0]
     const data = await generateReport({ jobDescription, selfDescription, resume })
     console.log(data)
-    navigate(`/interview/${data._id}`)
-    
+    navigate(`/interview/${data._id}`)   
+  }
+  if(loading){
+    return(<div>Loading........</div>)
   }
   return (
     <div className="home">
