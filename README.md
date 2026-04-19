@@ -444,11 +444,9 @@ npm install
 npm run dev
 ```
 
-| Service | URL |
-|---|---|
-| Frontend | `http://localhost:5173` |
-| Backend | `http://localhost:5000` |
-
+| Service         | URL                    |
+|-----------------|------------------------|
+| App (Full)      | http://localhost:3000  |
 ---
 
 ## 🧩 Key Concepts Explained
